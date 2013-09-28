@@ -1,0 +1,26 @@
+{
+   "name":"try-parse",
+   "description":"Try to parse different data types from strings and objects of strings",
+   "version":"1.0.0",
+   "homepage":"http://github.com/wearefractal/try-parse",
+   "repository":"git://github.com/wearefractal/try-parse.git",
+   "author":"Fractal <contact@wearefractal.com> (http://wearefractal.com/)",
+   "main":"./index.js",
+   
+   "devDependencies":{
+      "mocha":"*",
+      "should":"*"
+   },
+   "scripts":{
+      "test":"mocha"
+   },
+   "engines":{
+      "node":">= 0.4.0"
+   },
+   "licenses":[
+      {
+         "type":"MIT",
+         "url":"http://github.com/wearefractal/try-parse/raw/master/LICENSE"
+      }
+   ]
+}
