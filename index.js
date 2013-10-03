@@ -30,12 +30,23 @@ module.exports = tp = {
     });
     return out;
   },
+  parseArray: function(arr) {
+    var out = [];
+
+    var i, length;
+    for(i = 0, length = arr.length; i < length; i++) {
+      out.push(tp.parseAny(arr[i]));
+    }
+    return out;
+  },
   parseAny: function(val) {
     var t = typeof val;
     if (t === "string") {
       return tp.parseValue(val);
     } else if (t === "object") {
       return tp.parseObject(val);
+    } else if (t === "array") {
+      return tp.parseArray(val);
     } else {
       return val;
     }
