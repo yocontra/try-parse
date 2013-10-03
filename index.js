@@ -7,7 +7,31 @@ module.exports = tp = {
     "no": false,
     "false": false
   },
-  parseValue: function(val) {
+  parse: function(val) {
+    // discard shit values
+    if (val === null) return val;
+    if (typeof val === "undefined") return val;
+
+    // recurse arrays
+    if (Array.isArray(val)) {
+      var outArr = [];
+
+      val.forEach(function(i, idx){
+        outArr[idx] = tp.parse(i);
+      });
+      return outArr;
+    }
+
+    // recurse objects
+    if (typeof val === "object") {
+      var outObj = {};
+
+      Object.keys(val).forEach(function(k){
+        outObj[k] = tp.parse(val[k]);
+      });
+      return outObj;
+    }
+
     // check replacement table
     var lowered = val.toLowerCase();
     if (typeof tp.table[lowered] !== "undefined") return tp.table[lowered];
@@ -20,20 +44,5 @@ module.exports = tp = {
     if (!isNaN(date)) return date;
 
     return val;
-  },
-  parseObject: function(obj) {
-    var out = {};
-
-    Object.keys(obj).forEach(function(k){
-      var val = obj[k];
-      if (typeof val === "string") {
-        out[k] = tp.parseValue(val);
-      } else if (typeof val === "object") {
-        out[k] = tp.parseObject(val);
-      } else {
-        out[k] = val;
-      }
-    });
-    return out;
   }
 };

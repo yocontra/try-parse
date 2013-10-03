@@ -22,9 +22,11 @@
 
 Works with numbers, ISO date strings, floats, and booleans (y, n, yes, no, false, and true). If you feel the need for another type to be parsed please open a pull request or issue as they are very easy to add.
 
+This will recursively iterate objects and arrays and arrays of objects or whatever so make sure you don't have reference loops in the data.
+
 ```javascript
 // parse a single value
-var port = tryparse.parseValue("8080");
+var port = tryparse.parse("8080");
 console.log(port); // 8080 (a number)
 
 // recursively iterate a whole object
@@ -41,7 +43,7 @@ var in = {
   gracias: "no"
 };
 
-var out = tryparse.parseObject(in);
+var out = tryparse.parse(in);
 console.log(out);
 
 /*
@@ -59,7 +61,7 @@ console.log(out);
 */
 
 // replace process.env with a parsed one
-process.env = tryparse.parseObject(process.env);
+process.env = tryparse.parse(process.env);
 
 ```
 

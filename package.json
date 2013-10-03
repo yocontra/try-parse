@@ -1,7 +1,7 @@
 {
    "name":"try-parse",
    "description":"Try to parse different data types from strings and objects of strings",
-   "version":"1.0.0",
+   "version":"2.0.0",
    "homepage":"http://github.com/wearefractal/try-parse",
    "repository":"git://github.com/wearefractal/try-parse.git",
    "author":"Fractal <contact@wearefractal.com> (http://wearefractal.com/)",
