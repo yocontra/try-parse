@@ -26,14 +26,18 @@ module.exports = tp = {
 
     Object.keys(obj).forEach(function(k){
       var val = obj[k];
-      if (typeof val === "string") {
-        out[k] = tp.parseValue(val);
-      } else if (typeof val === "object") {
-        out[k] = tp.parseObject(val);
-      } else {
-        out[k] = val;
-      }
+      out[k] = tp.parseAny(val);
     });
     return out;
+  },
+  parseAny: function(val) {
+    var t = typeof val;
+    if (t === "string") {
+      return tp.parseValue(val);
+    } else if (t === "object") {
+      return tp.parseObject(val);
+    } else {
+      return val;
+    }
   }
 };
