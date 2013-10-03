@@ -130,4 +130,64 @@ describe('try-parse', function() {
 
   });
 
+  describe('parseArray()', function() {
+    it('should work on a flat array', function(done) {
+      var arr = [
+        "8080",
+        "example.com",
+        "-2.5",
+        "Fri Sep 27 2013 18:10:00 GMT-0700 (MST)",
+        "Y",
+        "n",
+        "yes",
+        "false",
+        "no"
+      ];
+      var expected = [
+        8080,
+        "example.com",
+        -2.5,
+        new Date(arr[3]),
+        true,
+        false,
+        true,
+        false,
+        false
+      ];
+
+      tryparse.parseArray(arr).should.eql(expected);
+      done();
+    })
+
+    it('should work on a nested array', function(done) {
+      var arr = [
+        "8080",
+        "example.com",
+        "-2.5",
+        "Fri Sep 27 2013 18:10:00 GMT-0700 (MST)",
+        "Y",
+        "n",
+        "yes",
+        "false",
+        "no",
+        ["yes", "3.14", "hi"]
+      ];
+      var expected = [
+        8080,
+        "example.com",
+        -2.5,
+        new Date(arr[3]),
+        true,
+        false,
+        true,
+        false,
+        false,
+        [true, 3.14, "hi"]
+      ];
+
+      tryparse.parseArray(arr).should.eql(expected);
+      done();
+    })
+  })
+
 });
