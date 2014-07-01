@@ -4,64 +4,67 @@ require('mocha');
 
 describe('try-parse', function() {
   describe('parse() flat', function() {
-    it('should work on positive hex numbers', function(done) {
+    it('should work on positive hex numbers', function() {
       tryparse.parse("0x5f").should.equal(0x5f);
-      done();
     });
 
-
-    it('should work on positive numbers', function(done) {
+    it('should work on positive numbers', function() {
       tryparse.parse("2").should.equal(2);
-      done();
     });
 
-    it('should work on positive floats', function(done) {
+    it('should work on positive floats', function() {
       tryparse.parse("2.1").should.equal(2.1);
-      done();
     });
 
-    it('should work on negative numbers', function(done) {
+    it('should work on negative numbers', function() {
       tryparse.parse("-2").should.equal(-2);
-      done();
     });
 
-    it('should work on negative floats', function(done) {
+    it('should work on negative floats', function() {
       tryparse.parse("-2.1").should.equal(-2.1);
-      done();
     });
 
-    it('should work on date strings', function(done) {
+    it('should work on NaN', function() {
+      tryparse.parse("NaN").should.be.NaN;
+    });
+
+    it('should work on date strings', function() {
       var str = "Fri Sep 27 2013 18:10:00 GMT-0700 (MST)";
       var out = tryparse.parse(str);
       var expected = new Date(str);
       out.getTime().should.equal(expected.getTime());
-      done();
     });
 
-    it('should work on true booleans', function(done) {
-      tryparse.parse("y").should.equal(true);
-      tryparse.parse("Y").should.equal(true);
-      tryparse.parse("yes").should.equal(true);
-      tryparse.parse("Yes").should.equal(true);
-      tryparse.parse("true").should.equal(true);
-      tryparse.parse("True").should.equal(true);
-      done();
+    it('should work on true booleans', function() {
+      tryparse.parse("y").should.be.true;
+      tryparse.parse("Y").should.be.true;
+      tryparse.parse("yes").should.be.true;
+      tryparse.parse("Yes").should.be.true;
+      tryparse.parse("true").should.be.true;
+      tryparse.parse("True").should.be.true;
     });
 
-    it('should work on false booleans', function(done) {
-      tryparse.parse("n").should.equal(false);
-      tryparse.parse("N").should.equal(false);
-      tryparse.parse("no").should.equal(false);
-      tryparse.parse("No").should.equal(false);
-      tryparse.parse("false").should.equal(false);
-      tryparse.parse("False").should.equal(false);
-      done();
+    it('should work on false booleans', function() {
+      tryparse.parse("n").should.be.false;
+      tryparse.parse("N").should.be.false;
+      tryparse.parse("no").should.be.false;
+      tryparse.parse("No").should.be.false;
+      tryparse.parse("false").should.be.false;
+      tryparse.parse("False").should.be.false;
     });
+
+    it('should work on null strings', function() {
+      (tryparse.parse("null") === null).should.be.true;
+    })
+
+    it('should work on undefined strings', function() {
+      (tryparse.parse("undefined") === undefined).should.be.true;
+    })
 
   });
 
-  describe('parse() recursive object', function() {
-    it('should work on a flat object', function(done) {
+  describe('parse() objects', function() {
+    it('should work on a flat object', function() {
       var obj = {
         port: "8080",
         host: "example.com",
@@ -86,10 +89,9 @@ describe('try-parse', function() {
       };
 
       tryparse.parse(obj).should.eql(expected);
-      done();
     });
 
-    it('should work on a recursive object', function(done) {
+    it('should work on a nested object', function() {
       var obj = {
         port: "8080",
         host: "example.com",
@@ -124,13 +126,54 @@ describe('try-parse', function() {
       };
 
       tryparse.parse(obj).should.eql(expected);
-      done();
+    });
+
+  });
+
+
+  describe('parse() JSON strings', function() {
+    it('should work on a recursive JSON string', function() {
+      var obj = {
+        port: "8080",
+        host: "example.com",
+        size: "-2.5",
+        runAt: "Fri Sep 27 2013 18:10:00 GMT-0700 (MST)",
+        doStuff: "Y",
+        dontDoStuff: "n",
+        please: "yes",
+        thanks: "false",
+        gracias: "no",
+        nested: {
+          please: "yes",
+          thanks: "false",
+          gracias: "no"
+        }
+      };
+      var str = JSON.stringify(obj);
+      var expected = {
+        port: 8080,
+        host: "example.com",
+        size: -2.5,
+        runAt: new Date(obj.runAt),
+        doStuff: true,
+        dontDoStuff: false,
+        please: true,
+        thanks: false,
+        gracias: false,
+        nested: {
+          please: true,
+          thanks: false,
+          gracias: false
+        }
+      };
+
+      tryparse.parse(str).should.eql(expected);
     });
 
   });
   
-  describe('parse() recursive array', function() {
-    it('should work on a flat array', function(done) {
+  describe('parse() arrays', function() {
+    it('should work on a flat array', function() {
       var obj = [{
         port: "8080",
         host: "example.com",
@@ -155,10 +198,9 @@ describe('try-parse', function() {
       }];
 
       tryparse.parse(obj).should.eql(expected);
-      done();
     });
 
-    it('should work on a recursive array', function(done) {
+    it('should work on a nested array', function() {
       var obj = [{
         port: "8080",
         host: "example.com",
@@ -193,7 +235,6 @@ describe('try-parse', function() {
       }];
 
       tryparse.parse(obj).should.eql(expected);
-      done();
     });
 
   });
