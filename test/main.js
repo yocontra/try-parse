@@ -35,7 +35,6 @@ describe('try-parse', function() {
       var out = tryparse.parse(str);
       var expected = new Date(str);
       out.getTime().should.equal(expected.getTime());
-      String(out).should.equal(str);
       done();
     });
 
