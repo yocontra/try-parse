@@ -63,7 +63,7 @@ describe('try-parse', function() {
 
   });
 
-  describe('parse() recursive object', function() {
+  describe('parse() objects', function() {
     it('should work on a flat object', function() {
       var obj = {
         port: "8080",
@@ -91,7 +91,7 @@ describe('try-parse', function() {
       tryparse.parse(obj).should.eql(expected);
     });
 
-    it('should work on a recursive object', function() {
+    it('should work on a nested object', function() {
       var obj = {
         port: "8080",
         host: "example.com",
@@ -129,8 +129,50 @@ describe('try-parse', function() {
     });
 
   });
+
+
+  describe('parse() JSON strings', function() {
+    it('should work on a recursive JSON string', function() {
+      var obj = {
+        port: "8080",
+        host: "example.com",
+        size: "-2.5",
+        runAt: "Fri Sep 27 2013 18:10:00 GMT-0700 (MST)",
+        doStuff: "Y",
+        dontDoStuff: "n",
+        please: "yes",
+        thanks: "false",
+        gracias: "no",
+        nested: {
+          please: "yes",
+          thanks: "false",
+          gracias: "no"
+        }
+      };
+      var str = JSON.stringify(obj);
+      var expected = {
+        port: 8080,
+        host: "example.com",
+        size: -2.5,
+        runAt: new Date(obj.runAt),
+        doStuff: true,
+        dontDoStuff: false,
+        please: true,
+        thanks: false,
+        gracias: false,
+        nested: {
+          please: true,
+          thanks: false,
+          gracias: false
+        }
+      };
+
+      tryparse.parse(str).should.eql(expected);
+    });
+
+  });
   
-  describe('parse() recursive array', function() {
+  describe('parse() arrays', function() {
     it('should work on a flat array', function() {
       var obj = [{
         port: "8080",
@@ -158,7 +200,7 @@ describe('try-parse', function() {
       tryparse.parse(obj).should.eql(expected);
     });
 
-    it('should work on a recursive array', function() {
+    it('should work on a nested array', function() {
       var obj = [{
         port: "8080",
         host: "example.com",

@@ -10,6 +10,7 @@ module.exports = tp = {
     "undefined": undefined
   },
   parse: function(val) {
+
     // discard bad values
     if (val === null) return val;
     if (typeof val === "undefined") return val;
@@ -47,6 +48,10 @@ module.exports = tp = {
     // check if it's a date
     var date = new Date(val);
     if (!isNaN(date)) return date;
+
+    // check if it's JSON
+    try { return tp.parse(JSON.parse(val)); }
+    catch (e) { }
 
     return val;
   }
