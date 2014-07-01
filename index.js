@@ -5,10 +5,12 @@ module.exports = tp = {
     "true": true,
     "n": false,
     "no": false,
-    "false": false
+    "false": false,
+    "null": null,
+    "undefined": undefined
   },
   parse: function(val) {
-    // discard shit values
+    // discard bad values
     if (val === null) return val;
     if (typeof val === "undefined") return val;
 
@@ -34,12 +36,15 @@ module.exports = tp = {
 
     // check replacement table
     var lowered = val.toLowerCase();
-    if (typeof tp.table[lowered] !== "undefined") return tp.table[lowered];
+    if (lowered in tp.table) return tp.table[lowered];
 
-    // check if its a number
+    // check if it's a number
     if (!isNaN(val)) return +val;
 
-    // check if its a date
+    // check if it's NaN
+    if (val === "NaN") return NaN;
+
+    // check if it's a date
     var date = new Date(val);
     if (!isNaN(date)) return date;
 

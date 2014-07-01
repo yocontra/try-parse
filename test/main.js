@@ -30,6 +30,11 @@ describe('try-parse', function() {
       done();
     });
 
+    it('should work on NaN', function(done) {
+      tryparse.parse("NaN").should.be.NaN;
+      done();
+    });
+
     it('should work on date strings', function(done) {
       var str = "Fri Sep 27 2013 18:10:00 GMT-0700 (MST)";
       var out = tryparse.parse(str);
@@ -57,6 +62,16 @@ describe('try-parse', function() {
       tryparse.parse("False").should.equal(false);
       done();
     });
+
+    it('should work on null strings', function(done) {
+      (tryparse.parse("null") === null).should.equal(true);
+      done();
+    })
+
+    it('should work on undefined strings', function(done) {
+      (tryparse.parse("undefined") === undefined).should.equal(true);
+      done();
+    })
 
   });
 
